@@ -1,0 +1,41 @@
+{
+  "name": "rnews",
+  "version": "1.0.0",
+  "description": "个人新闻聚合推送工具 - 从 RSS/API 抓取新闻，通过 Webhook 推送到 WPS Teams、企业微信等平台",
+  "type": "module",
+  "scripts": {
+    "push": "bash run.sh push",
+    "push:all": "bash run.sh push --category all",
+    "list": "bash run.sh list",
+    "start": "npx tsx src/index.ts start",
+    "install:macos": "bash scripts/install-macos.sh",
+    "uninstall:macos": "bash scripts/uninstall-macos.sh",
+    "build": "tsup src/index.ts --format esm --dts"
+  },
+  "keywords": [
+    "news",
+    "webhook",
+    "rss",
+    "wps-teams",
+    "github-trending"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "commander": "^14.0.3",
+    "js-yaml": "^4.1.1",
+    "node-cron": "^4.2.1",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.2.3",
+    "@types/node-cron": "^3.0.11",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

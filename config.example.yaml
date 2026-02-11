@@ -1,0 +1,118 @@
+# rNews 配置文件示例
+# Webhook 地址使用 ${ENV_VAR} 引用 .env 文件中的环境变量
+# 复制此文件为 config.yaml，然后复制 .env.example 为 .env 并填入实际地址
+
+# ============================================================
+# 全局设置
+# ============================================================
+settings:
+  # 英文标题自动翻译为中文（在原文后追加中文翻译）
+  # Auto-translate English titles to Chinese
+  # 使用 Google Translate 免费接口，国内如无法访问可设为 false
+  translate: true
+
+  # 定时任务时区（IANA 格式）
+  # Timezone for scheduled tasks (IANA format)
+  timezone: "Asia/Shanghai"
+
+# ============================================================
+# Webhook 配置
+# 同一平台类型可以注册多个地址（用于不同的群/频道）
+# ============================================================
+webhooks:
+  # WPS Teams (WPS 协作)
+  wps-teams-personal:
+    type: wps-teams
+    url: "${WPS_TEAMS_PERSONAL_URL}"
+
+  # 可以配置多个 WPS Teams webhook
+  # wps-teams-tech:
+  #   type: wps-teams
+  #   url: "${WPS_TEAMS_TECH_URL}"
+
+  # 企业微信
+  # wecom-general:
+  #   type: wecom
+  #   url: "${WECOM_GENERAL_URL}"
+
+# ============================================================
+# 新闻类别配置
+# 每个类别独立配置数据源和推送渠道
+# ============================================================
+categories:
+  politics:
+    name: "时政要闻"
+    count: 10
+    webhooks: [wps-teams-personal]
+    sources:
+      - name: "中新网 国际"
+        type: rss
+        url: "https://www.chinanews.com.cn/rss/world.xml"
+      - name: "中新网 时政"
+        type: rss
+        url: "https://www.chinanews.com.cn/rss/china.xml"
+      - name: "BBC World"
+        type: rss
+        url: "https://feeds.bbci.co.uk/news/world/rss.xml"
+
+  ai:
+    name: "AI 前沿"
+    count: 10
+    webhooks: [wps-teams-personal]
+    sources:
+      - name: "TechCrunch AI"
+        type: rss
+        url: "https://techcrunch.com/category/artificial-intelligence/feed/"
+      - name: "MIT Tech Review"
+        type: rss
+        url: "https://www.technologyreview.com/feed/"
+      - name: "The Verge AI"
+        type: rss
+        url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+
+  finance:
+    name: "经济金融"
+    count: 10
+    webhooks: [wps-teams-personal]
+    sources:
+      - name: "中新网 财经"
+        type: rss
+        url: "https://www.chinanews.com.cn/rss/finance.xml"
+      - name: "中新网 要闻"
+        type: rss
+        url: "https://www.chinanews.com.cn/rss/importnews.xml"
+      - name: "36氪"
+        type: rss
+        url: "https://36kr.com/feed"
+
+  football:
+    name: "足球资讯"
+    count: 10
+    webhooks: [wps-teams-personal]
+    sources:
+      - name: "BBC Football"
+        type: rss
+        url: "https://feeds.bbci.co.uk/sport/football/rss.xml"
+      - name: "ESPN FC"
+        type: rss
+        url: "https://www.espn.com/espn/rss/soccer/news"
+
+  github:
+    name: "GitHub 热门项目"
+    count: 10
+    webhooks: [wps-teams-personal]
+    sources:
+      - type: github-trending
+        language: ""
+        since: daily
+
+# ============================================================
+# 定时规则（本地调度器使用）
+# Schedule rules (used by the local scheduler)
+# Cron format: minute hour day-of-month month day-of-week
+# ============================================================
+schedule:
+  - cron: "0 8 * * *"        # 每天早上 8 点 / 8:00 AM daily
+    categories: [politics, ai, finance]
+  - cron: "0 20 * * *"       # 每天晚上 8 点 / 8:00 PM daily
+    categories: [football, github]
