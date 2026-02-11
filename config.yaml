@@ -54,9 +54,6 @@ categories:
       - name: "BBC World"
         type: rss
         url: "https://feeds.bbci.co.uk/news/world/rss.xml"
-      - name: "Al Jazeera"
-        type: rss
-        url: "https://www.aljazeera.com/xml/rss/all.xml"
 
   ai:
     name: "AI 前沿"
@@ -84,9 +81,9 @@ categories:
       - name: "36氪"
         type: rss
         url: "https://36kr.com/feed"
-      - name: "CNBC Business"
-        type: rss
-        url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147"
+      # - name: "CNBC Business"
+      #   type: rss
+      #   url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147"
       - name: "MarketWatch"
         type: rss
         url: "https://feeds.marketwatch.com/marketwatch/topstories"

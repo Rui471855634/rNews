@@ -48,18 +48,18 @@ export function formatSourceSection(group: SourceGroup): string {
 /**
  * 将多个源分组拆分为多条消息，避免单条消息超长被截断
  *
- * 策略：按源逐个累加，当加入下一个源会导致超限时，切为新消息。
+ * 策略：每 sourcesPerMessage 个源为一批。
  * 第一条带 "## 类别名"，后续带 "## 类别名（续）"。
  *
  * @param categoryName 类别显示名
  * @param groups 按源分组的新闻数据
- * @param maxLength 单条消息最大字符数（默认 4500，留 buffer）
+ * @param sourcesPerMessage 每条消息包含的源数量（默认 3）
  * @returns 拆分后的多条 Markdown 消息
  */
 export function formatNewsMessages(
   categoryName: string,
   groups: SourceGroup[],
-  maxLength = 4500,
+  sourcesPerMessage = 3,
 ): string[] {
   const nonEmpty = groups.filter((g) => g.items.length > 0);
 
@@ -69,29 +69,12 @@ export function formatNewsMessages(
 
   const footer = `\n\n> 更新时间：${formatTime()}`;
   const messages: string[] = [];
-  let currentParts: string[] = [];
-  let currentHeader = `## ${categoryName}`;
-  let currentLength = currentHeader.length + footer.length;
 
-  for (const group of nonEmpty) {
-    const section = formatSourceSection(group);
-    const sectionLength = section.length + 2; // +2 for \n\n separator
-
-    if (currentParts.length > 0 && currentLength + sectionLength > maxLength) {
-      // 当前批次已满，保存并开始新批次
-      messages.push(currentHeader + '\n' + currentParts.join('\n\n') + footer);
-      currentHeader = `## ${categoryName}（续）`;
-      currentParts = [];
-      currentLength = currentHeader.length + footer.length;
-    }
-
-    currentParts.push(section);
-    currentLength += sectionLength;
-  }
-
-  // 最后一批
-  if (currentParts.length > 0) {
-    messages.push(currentHeader + '\n' + currentParts.join('\n\n') + footer);
+  for (let i = 0; i < nonEmpty.length; i += sourcesPerMessage) {
+    const batch = nonEmpty.slice(i, i + sourcesPerMessage);
+    const header = i === 0 ? `## ${categoryName}` : `## ${categoryName}（续）`;
+    const sections = batch.map((g) => formatSourceSection(g)).join('\n\n');
+    messages.push(header + '\n' + sections + footer);
   }
 
   return messages;
