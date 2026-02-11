@@ -83,6 +83,10 @@ program
             const lang = source.language || '所有语言';
             const since = source.since || 'daily';
             console.log(`      - [GitHub Trending] ${lang} / ${since}`);
+          } else if (source.type === 'baidu-hot') {
+            console.log(`      - [百度热搜] ${source.name || '实时热搜'}`);
+          } else if (source.type === 'toutiao-hot') {
+            console.log(`      - [今日头条] ${source.name || '热榜'}`);
           }
         }
       }

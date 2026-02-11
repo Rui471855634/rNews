@@ -20,10 +20,15 @@ settings:
 # 同一平台类型可以注册多个地址（用于不同的群/频道）
 # ============================================================
 webhooks:
-  # WPS Teams (WPS 协作)
+  # WPS Teams 个人群（测试用）
   wps-teams-personal:
     type: wps-teams
     url: "${WPS_TEAMS_PERSONAL_URL}"
+
+  # WPS Teams IM 应用 Core 群（正式用）
+  # wps-teams-im-app-core:
+  #   type: wps-teams
+  #   url: "${WPS_TEAMS_IM_APP_CORE_URL}"
 
   # 可以配置多个 WPS Teams webhook
   # wps-teams-tech:
@@ -31,9 +36,9 @@ webhooks:
   #   url: "${WPS_TEAMS_TECH_URL}"
 
   # 企业微信
-  # wecom-general:
-  #   type: wecom
-  #   url: "${WECOM_GENERAL_URL}"
+  wecom-personal:
+    type: wecom
+    url: "${WECOM_PERSONAL_URL}"
 
 # ============================================================
 # 新闻类别配置
@@ -58,7 +63,7 @@ categories:
   ai:
     name: "AI 前沿"
     count: 10
-    webhooks: [wps-teams-personal]
+    webhooks: [wps-teams-personal, wecom-personal]
     sources:
       - name: "TechCrunch AI"
         type: rss
@@ -118,7 +123,7 @@ categories:
   frontend:
     name: "前端开发"
     count: 10
-    webhooks: [wps-teams-personal]
+    webhooks: [wps-teams-personal, wecom-personal]
     sources:
       - name: "阮一峰的网络日志"
         type: rss
@@ -129,6 +134,19 @@ categories:
       - name: "Smashing Magazine"
         type: rss
         url: "https://www.smashingmagazine.com/feed/"
+
+  trending:
+    name: "网络热梗"
+    count: 10
+    webhooks: [wps-teams-personal, wecom-personal]
+    sources:
+      - type: baidu-hot
+        name: "百度热搜"
+      - type: toutiao-hot
+        name: "今日头条"
+      - name: "Hacker News"
+        type: rss
+        url: "https://hnrss.org/frontpage?count=20"
 
   github:
     name: "GitHub 热门项目"
@@ -147,6 +165,6 @@ categories:
 # ============================================================
 schedule:
   - cron: "0 8 * * *"        # 每天早上 8 点 / 8:00 AM daily
-    categories: [politics, ai, tech, finance, frontend, football, github]
+    categories: [politics, ai, tech, finance, frontend, trending, football, github]
   - cron: "0 20 * * *"       # 每天晚上 8 点 / 8:00 PM daily
-    categories: [politics, ai, tech, finance, frontend, football, github]
+    categories: [politics, ai, tech, finance, frontend, trending, football, github]

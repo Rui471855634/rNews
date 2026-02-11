@@ -6,7 +6,7 @@
 export type WebhookType = 'wps-teams' | 'wecom';
 
 /** 数据源类型 */
-export type SourceType = 'rss' | 'github-trending';
+export type SourceType = 'rss' | 'github-trending' | 'baidu-hot' | 'toutiao-hot';
 
 /** Webhook 配置 */
 export interface WebhookConfig {
@@ -29,8 +29,20 @@ export interface GithubTrendingSourceConfig {
   since?: 'daily' | 'weekly' | 'monthly';
 }
 
+/** 百度热搜数据源配置 */
+export interface BaiduHotSourceConfig {
+  type: 'baidu-hot';
+  name?: string;
+}
+
+/** 今日头条热榜数据源配置 */
+export interface ToutiaoHotSourceConfig {
+  type: 'toutiao-hot';
+  name?: string;
+}
+
 /** 数据源配置（联合类型） */
-export type SourceConfig = RssSourceConfig | GithubTrendingSourceConfig;
+export type SourceConfig = RssSourceConfig | GithubTrendingSourceConfig | BaiduHotSourceConfig | ToutiaoHotSourceConfig;
 
 /** 新闻类别配置 */
 export interface CategoryConfig {

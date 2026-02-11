@@ -48,18 +48,21 @@ export function formatSourceSection(group: SourceGroup): string {
 /**
  * 将多个源分组拆分为多条消息，避免单条消息超长被截断
  *
- * 策略：每 sourcesPerMessage 个源为一批。
+ * 策略：每批最多 maxSourcesPerMsg 个源，且总字符数不超过 maxChars。
+ * 两个条件任一触发即切为新消息。
  * 第一条带 "## 类别名"，后续带 "## 类别名（续）"。
  *
  * @param categoryName 类别显示名
  * @param groups 按源分组的新闻数据
- * @param sourcesPerMessage 每条消息包含的源数量（默认 3）
+ * @param maxSourcesPerMsg 每条消息最多包含的源数量（默认 3）
+ * @param maxChars 每条消息最大字符数（默认 4500）
  * @returns 拆分后的多条 Markdown 消息
  */
 export function formatNewsMessages(
   categoryName: string,
   groups: SourceGroup[],
-  sourcesPerMessage = 3,
+  maxSourcesPerMsg = 3,
+  maxChars = 4500,
 ): string[] {
   const nonEmpty = groups.filter((g) => g.items.length > 0);
 
@@ -69,12 +72,31 @@ export function formatNewsMessages(
 
   const footer = `\n\n> 更新时间：${formatTime()}`;
   const messages: string[] = [];
+  let batchIndex = 0;
+  let currentSections: string[] = [];
+  let currentLength = 0;
 
-  for (let i = 0; i < nonEmpty.length; i += sourcesPerMessage) {
-    const batch = nonEmpty.slice(i, i + sourcesPerMessage);
-    const header = i === 0 ? `## ${categoryName}` : `## ${categoryName}（续）`;
-    const sections = batch.map((g) => formatSourceSection(g)).join('\n\n');
-    messages.push(header + '\n' + sections + footer);
+  for (const group of nonEmpty) {
+    const section = formatSourceSection(group);
+    const wouldExceedChars = currentSections.length > 0
+      && currentLength + section.length + 2 > maxChars - footer.length - 30;
+    const wouldExceedCount = currentSections.length >= maxSourcesPerMsg;
+
+    if (currentSections.length > 0 && (wouldExceedChars || wouldExceedCount)) {
+      const header = batchIndex === 0 ? `## ${categoryName}` : `## ${categoryName}（续）`;
+      messages.push(header + '\n' + currentSections.join('\n\n') + footer);
+      batchIndex++;
+      currentSections = [];
+      currentLength = 0;
+    }
+
+    currentSections.push(section);
+    currentLength += section.length + 2;
+  }
+
+  if (currentSections.length > 0) {
+    const header = batchIndex === 0 ? `## ${categoryName}` : `## ${categoryName}（续）`;
+    messages.push(header + '\n' + currentSections.join('\n\n') + footer);
   }
 
   return messages;

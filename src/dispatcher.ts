@@ -5,8 +5,11 @@
 
 import type { AppConfig, CategoryConfig, RssSourceConfig, GithubTrendingSourceConfig } from './config/types.js';
 import type { WebhookAdapter } from './webhooks/types.js';
+import type { NewsItem } from './sources/types.js';
 import { fetchSingleRssSource } from './sources/rss-source.js';
 import { fetchGithubTrending } from './sources/github-trending.js';
+import { fetchBaiduHot } from './sources/baidu-hot.js';
+import { fetchToutiaoHot } from './sources/toutiao-hot.js';
 import { formatNewsMessages, formatGithubMarkdown } from './formatter.js';
 import type { SourceGroup } from './formatter.js';
 import { WpsTeamsWebhook } from './webhooks/wps-teams.js';
@@ -79,20 +82,33 @@ export async function dispatch(
       const translatedItems = shouldTranslate ? await translateTitles(items, true) : items;
       messages = [formatGithubMarkdown(category.name, translatedItems)];
     } else {
-      // RSS 类别：逐源抓取，每个源独立列出 Top N
-      const rssSources = category.sources.filter(
-        (s) => s.type === 'rss',
-      ) as RssSourceConfig[];
-
+      // 通用类别：逐源抓取，每个源独立列出 Top N
       const groups: SourceGroup[] = [];
 
-      for (const source of rssSources) {
-        const items = await fetchSingleRssSource(source, category.count);
+      for (const source of category.sources) {
+        let items: NewsItem[] = [];
+        let sourceName = '';
+
+        if (source.type === 'rss') {
+          const rssSource = source as RssSourceConfig;
+          sourceName = rssSource.name;
+          items = await fetchSingleRssSource(rssSource, category.count);
+        } else if (source.type === 'baidu-hot') {
+          sourceName = source.name ?? '百度热搜';
+          items = await fetchBaiduHot(category.count);
+        } else if (source.type === 'toutiao-hot') {
+          sourceName = source.name ?? '今日头条';
+          items = await fetchToutiaoHot(category.count);
+        }
+
         if (items.length === 0) continue;
 
-        console.log(`   ${source.name}: ${items.length} 条`);
-        const translatedItems = shouldTranslate ? await translateTitles(items, false) : items;
-        groups.push({ name: source.name, items: translatedItems });
+        console.log(`   ${sourceName}: ${items.length} 条`);
+        const isTranslatable = source.type === 'rss';
+        const translatedItems = shouldTranslate && isTranslatable
+          ? await translateTitles(items, false)
+          : items;
+        groups.push({ name: sourceName, items: translatedItems });
       }
 
       if (groups.length === 0) {

@@ -112,6 +112,19 @@ categories:
         type: rss
         url: "https://www.smashingmagazine.com/feed/"
 
+  trending:
+    name: "网络热梗"
+    count: 10
+    webhooks: [wps-teams-personal]
+    sources:
+      - type: baidu-hot
+        name: "百度热搜"
+      - type: toutiao-hot
+        name: "今日头条"
+      - name: "Hacker News"
+        type: rss
+        url: "https://hnrss.org/frontpage?count=20"
+
   github:
     name: "GitHub 热门项目"
     count: 10
@@ -128,6 +141,6 @@ categories:
 # ============================================================
 schedule:
   - cron: "0 8 * * *"        # 每天早上 8 点 / 8:00 AM daily
-    categories: [politics, ai, finance, frontend]
+    categories: [politics, ai, finance, frontend, trending]
   - cron: "0 20 * * *"       # 每天晚上 8 点 / 8:00 PM daily
     categories: [football, github]
