@@ -24,8 +24,8 @@
 
 import type { WebhookAdapter } from './types.js';
 
-/** 企业微信 Markdown 消息最大字节数 */
-const MAX_CONTENT_BYTES = 4096;
+/** 企业微信 Markdown 消息最大字节数（留 buffer，官方上限 4096） */
+const MAX_CONTENT_BYTES = 4000;
 
 /**
  * 将通用 Markdown 转换为企业微信支持的格式

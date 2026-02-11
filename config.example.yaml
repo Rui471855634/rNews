@@ -42,7 +42,7 @@ webhooks:
 categories:
   politics:
     name: "时政要闻"
-    count: 6
+    count: 5
     webhooks: [wps-teams-personal]
     sources:
       - name: "中新网 国际"
@@ -57,7 +57,7 @@ categories:
 
   ai:
     name: "AI 前沿"
-    count: 6
+    count: 5
     webhooks: [wps-teams-personal]
     sources:
       - name: "TechCrunch AI"
@@ -72,7 +72,7 @@ categories:
 
   finance:
     name: "经济金融"
-    count: 6
+    count: 5
     webhooks: [wps-teams-personal]
     sources:
       - name: "中新网 财经"
@@ -87,7 +87,7 @@ categories:
 
   football:
     name: "足球资讯"
-    count: 6
+    count: 5
     webhooks: [wps-teams-personal]
     sources:
       - name: "BBC Football"
@@ -99,7 +99,7 @@ categories:
 
   frontend:
     name: "前端开发"
-    count: 6
+    count: 5
     webhooks: [wps-teams-personal]
     sources:
       - name: "阮一峰的网络日志"
@@ -114,7 +114,7 @@ categories:
 
   trending:
     name: "网络热梗"
-    count: 6
+    count: 5
     webhooks: [wps-teams-personal]
     sources:
       - type: toutiao-hot
@@ -127,7 +127,7 @@ categories:
 
   github:
     name: "GitHub 热门项目"
-    count: 6
+    count: 5
     webhooks: [wps-teams-personal]
     sources:
       - type: github-trending
