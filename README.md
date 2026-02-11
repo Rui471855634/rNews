@@ -28,6 +28,7 @@ Personal news aggregation & push tool. Fetches news from RSS feeds and GitHub Tr
 | AI (AI 前沿) | TechCrunch AI, MIT Tech Review, The Verge AI |
 | Finance (经济金融) | ChinaNews (Finance/Headlines), 36Kr, CNBC, MarketWatch |
 | Tech (科技动态) | The Verge, Ars Technica, Wired |
+| Frontend (前端开发) | 阮一峰的网络日志, CSS-Tricks, Smashing Magazine |
 | Football (足球资讯) | BBC Football, ESPN FC |
 | GitHub Trending | Daily trending repos (stars, growth, language) |
 

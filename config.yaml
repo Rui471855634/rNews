@@ -118,6 +118,21 @@ categories:
         type: rss
         url: "https://www.espn.com/espn/rss/soccer/news"
 
+  frontend:
+    name: "前端开发"
+    count: 10
+    webhooks: [wps-teams-personal]
+    sources:
+      - name: "阮一峰的网络日志"
+        type: rss
+        url: "https://www.ruanyifeng.com/blog/atom.xml"
+      - name: "CSS-Tricks"
+        type: rss
+        url: "https://css-tricks.com/feed/"
+      - name: "Smashing Magazine"
+        type: rss
+        url: "https://www.smashingmagazine.com/feed/"
+
   github:
     name: "GitHub 热门项目"
     count: 10
@@ -135,6 +150,6 @@ categories:
 # ============================================================
 schedule:
   - cron: "0 8 * * *"        # 每天早上 8 点 / 8:00 AM daily
-    categories: [politics, ai, tech, finance, football, github]
+    categories: [politics, ai, tech, finance, frontend, football, github]
   - cron: "0 20 * * *"       # 每天晚上 8 点 / 8:00 PM daily
-    categories: [politics, ai, tech, finance, football, github]
+    categories: [politics, ai, tech, finance, frontend, football, github]
