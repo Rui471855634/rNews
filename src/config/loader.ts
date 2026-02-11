@@ -6,9 +6,10 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import yaml from 'js-yaml';
-import type { AppConfig } from './types.js';
+import type { AppConfig, LocalFilter } from './types.js';
 
 const DEFAULT_CONFIG_PATH = 'config.yaml';
+const LOCAL_FILTER_PATH = 'filter.local.yaml';
 
 /**
  * 加载 .env 文件中的环境变量
@@ -99,6 +100,36 @@ export function loadConfig(configPath?: string): AppConfig {
   validateConfig(config);
 
   return config;
+}
+
+/**
+ * 加载本地关键字过滤配置（filter.local.yaml）
+ * 文件不存在时返回空过滤器，不报错。
+ */
+export function loadLocalFilter(configDir?: string): LocalFilter {
+  const candidates = [
+    resolve(configDir ?? process.cwd(), LOCAL_FILTER_PATH),
+    resolve(process.cwd(), LOCAL_FILTER_PATH),
+  ];
+
+  for (const filterPath of candidates) {
+    if (existsSync(filterPath)) {
+      try {
+        const raw = readFileSync(filterPath, 'utf-8');
+        const data = yaml.load(raw) as { blocked_keywords?: string[] } | null;
+        const keywords = data?.blocked_keywords ?? [];
+        if (keywords.length > 0) {
+          console.log(`🚫 已加载 ${keywords.length} 个屏蔽关键字 (${filterPath})`);
+        }
+        return { blockedKeywords: keywords };
+      } catch (error) {
+        const msg = error instanceof Error ? error.message : String(error);
+        console.warn(`[Filter] 加载 filter.local.yaml 失败: ${msg}`);
+      }
+    }
+  }
+
+  return { blockedKeywords: [] };
 }
 
 /**

@@ -47,11 +47,7 @@ function convertToWecomMarkdown(text: string): string {
       if (line.startsWith('### ')) {
         return `**${line.slice(4).trim()}**`;
       }
-      // Numbered list: "1. [title](url)" → strip number prefix
-      const listMatch = line.match(/^\d+\.\s+(.+)/);
-      if (listMatch) {
-        return listMatch[1];
-      }
+      // Numbered list: keep as-is (WeCom renders plain text numbers fine)
       // > quote → gray color (more visible in WeCom)
       if (line.startsWith('> ')) {
         return `<font color="comment">${line.slice(2)}</font>`;

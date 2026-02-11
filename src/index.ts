@@ -87,6 +87,8 @@ program
             console.log(`      - [百度热搜] ${source.name || '实时热搜'}`);
           } else if (source.type === 'toutiao-hot') {
             console.log(`      - [今日头条] ${source.name || '热榜'}`);
+          } else if (source.type === 'bilibili-hot') {
+            console.log(`      - [B站热搜] ${source.name || '热搜'}`);
           }
         }
       }

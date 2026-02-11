@@ -6,7 +6,7 @@
 export type WebhookType = 'wps-teams' | 'wecom';
 
 /** 数据源类型 */
-export type SourceType = 'rss' | 'github-trending' | 'baidu-hot' | 'toutiao-hot';
+export type SourceType = 'rss' | 'github-trending' | 'baidu-hot' | 'toutiao-hot' | 'bilibili-hot';
 
 /** Webhook 配置 */
 export interface WebhookConfig {
@@ -41,8 +41,14 @@ export interface ToutiaoHotSourceConfig {
   name?: string;
 }
 
+/** B站热搜数据源配置 */
+export interface BilibiliHotSourceConfig {
+  type: 'bilibili-hot';
+  name?: string;
+}
+
 /** 数据源配置（联合类型） */
-export type SourceConfig = RssSourceConfig | GithubTrendingSourceConfig | BaiduHotSourceConfig | ToutiaoHotSourceConfig;
+export type SourceConfig = RssSourceConfig | GithubTrendingSourceConfig | BaiduHotSourceConfig | ToutiaoHotSourceConfig | BilibiliHotSourceConfig;
 
 /** 新闻类别配置 */
 export interface CategoryConfig {
@@ -72,4 +78,9 @@ export interface AppConfig {
   categories: Record<string, CategoryConfig>;
   schedule?: ScheduleConfig[];
   settings?: SettingsConfig;
+}
+
+/** 本地关键字过滤配置 (filter.local.yaml) */
+export interface LocalFilter {
+  blockedKeywords: string[];
 }

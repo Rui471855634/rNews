@@ -26,9 +26,9 @@ webhooks:
     url: "${WPS_TEAMS_PERSONAL_URL}"
 
   # WPS Teams IM 应用 Core 群（正式用）
-  # wps-teams-im-app-core:
-  #   type: wps-teams
-  #   url: "${WPS_TEAMS_IM_APP_CORE_URL}"
+  wps-teams-im-app-core:
+    type: wps-teams
+    url: "${WPS_TEAMS_IM_APP_CORE_URL}"
 
   # 可以配置多个 WPS Teams webhook
   # wps-teams-tech:
@@ -47,7 +47,7 @@ webhooks:
 categories:
   politics:
     name: "时政要闻"
-    count: 10
+    count: 6
     webhooks: [wps-teams-personal]
     sources:
       - name: "中新网 国际"
@@ -62,8 +62,8 @@ categories:
 
   ai:
     name: "AI 前沿"
-    count: 10
-    webhooks: [wps-teams-personal, wecom-personal]
+    count: 6
+    webhooks: [wps-teams-personal, wps-teams-im-app-core]
     sources:
       - name: "TechCrunch AI"
         type: rss
@@ -77,7 +77,7 @@ categories:
 
   finance:
     name: "经济金融"
-    count: 10
+    count: 6
     webhooks: [wps-teams-personal]
     sources:
       - name: "中新网 财经"
@@ -95,7 +95,7 @@ categories:
 
   tech:
     name: "科技动态"
-    count: 10
+    count: 6
     webhooks: [wps-teams-personal]
     sources:
       - name: "The Verge"
@@ -110,7 +110,7 @@ categories:
 
   football:
     name: "足球资讯"
-    count: 10
+    count: 6
     webhooks: [wps-teams-personal]
     sources:
       - name: "BBC Football"
@@ -122,8 +122,8 @@ categories:
 
   frontend:
     name: "前端开发"
-    count: 10
-    webhooks: [wps-teams-personal, wecom-personal]
+    count: 6
+    webhooks: [wps-teams-personal, wps-teams-im-app-core]
     sources:
       - name: "阮一峰的网络日志"
         type: rss
@@ -137,20 +137,20 @@ categories:
 
   trending:
     name: "网络热梗"
-    count: 10
+    count: 6
     webhooks: [wps-teams-personal, wecom-personal]
     sources:
-      - type: baidu-hot
-        name: "百度热搜"
       - type: toutiao-hot
         name: "今日头条"
-      - name: "Hacker News"
+      - type: bilibili-hot
+        name: "B站热搜"
+      - name: "Bored Panda"
         type: rss
-        url: "https://hnrss.org/frontpage?count=20"
+        url: "https://www.boredpanda.com/feed/"
 
   github:
     name: "GitHub 热门项目"
-    count: 10
+    count: 6
     webhooks: [wps-teams-personal]
     sources:
       - type: github-trending
